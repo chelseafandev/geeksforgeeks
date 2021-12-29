@@ -5,7 +5,7 @@
     - [Solution](#solution)
 
 ## Longest Common Subsequence
-우리는 Set1과 Set2에서 각각 하위 문제들을 포개는 법과 최적화된 하위 구조의 특징에 대해 논의해보았습니다. 또한 Set3에서는 한가지 예제에 대해 이야기를 나누었습니다. 동적 프로그래밍을 사용하여 풀 수 있는 또 하나의 예제로서 Longest Common Subsequence(LCS)에 대해 알아보도록 하겠습니다.
+우리는 Set1과 Set2에서 각각 하위 문제들의 중복과 최적화된 하위 구조의 특징에 대해 논의해보았습니다. 또한 Set3에서는 한가지 예제에 대해 이야기를 나누었습니다. 동적 프로그래밍을 사용하여 풀 수 있는 또 하나의 예제로서 Longest Common Subsequence(LCS)에 대해 알아보도록 하겠습니다.
 > We have discussed Overlapping Subproblems and Optimal Substructure properties in Set 1 and Set 2 respectively. We also discussed one example problem in Set 3. Let us discuss Longest Common Subsequence (LCS) problem as one more example problem that can be solved using Dynamic Programming.
 
 LCS는 주어진 두 개의 시퀀스에 모두 포함된 가장 긴 서브시퀀스의 길이를 찾는 문제입니다. 여기서 서브시퀀스란 연속적일 필요는 없으나 상대적으로 동일한 순서를 갖고 나타는 시퀀스를 의미합니다. 예를 들어, "abc", "abg", "bdf", "aeg", "acefg", .. 등은 "abcdefg"의 서브시퀀스입니다.
@@ -33,19 +33,21 @@ LCS for input Sequences “AGGTAB” and “GXTXAYB” is “GTAB” of length 4
 입력 시퀀스가 길이가 m인 X[0..m-1], 길이 n인 Y[0..n-1] 라고 해보겠습니다. 그리고 L(X[0..m-1], Y[0..n-1])은 시퀀스 X와 Y의 LCS의 길이를 나타냅니다. 이어지는 내용은 L(X[0..m-1], Y[0..n-1])의 재귀적인 정의에대한 것입니다.
 > Let the input sequences be X[0..m-1] and Y[0..n-1] of lengths m and n respectively. And let L(X[0..m-1], Y[0..n-1]) be the length of LCS of the two sequences X and Y. Following is the recursive definition of L(X[0..m-1], Y[0..n-1]).
 
-
+만약 두 시퀀스의 마지막 문자가 서로 매칭된다고 한다면 L(X[0..m-1], Y[0..n-1]) = 1 + L(X[0..m-2], Y[0..n-2])이라고 할 수 있습니다.
 > If last characters of both sequences match (or X[m-1] == Y[n-1]) then L(X[0..m-1], Y[0..n-1]) = 1 + L(X[0..m-2], Y[0..n-2])
 
+만약 두 시퀀스의 마지막 문자가 서로 매칭되지 않는다고 하면 L(X[0..m-1], Y[0..n-1]) = MAX ( L(X[0..m-2], Y[0..n-1]), L(X[0..m-1], Y[0..n-2]) )이라고 할 수 있습니다.
 > If last characters of both sequences do not match (or X[m-1] != Y[n-1]) then L(X[0..m-1], Y[0..n-1]) = MAX ( L(X[0..m-2], Y[0..n-1]), L(X[0..m-1], Y[0..n-2]) )
 
 > Examples:
 > 1) Consider the input strings “AGGTAB” and “GXTXAYB”. Last characters match for the strings. So length of LCS can be written as: L(“AGGTAB”, “GXTXAYB”) = 1 + L(“AGGTA”, “GXTXAY”)
 > 2) Consider the input strings “ABCDGH” and “AEDFHR. Last characters do not match for the strings. So length of LCS can be written as: L(“ABCDGH”, “AEDFHR”) = MAX ( L(“ABCDG”, “AEDFHR”), L(“ABCDGH”, “AEDFH”) )
 
+그러므로 LCS 문제는 메인 문제가 서브 문제들의 솔루션으로 해결이 가능한 최적화된 하위구조 특성을 갖고 있습니다.
 > So the LCS problem has optimal substructure property as the main problem can be solved using solutions to subproblems.
 
 2) Overlapping Subproblems:
-
+아래 코드는 단순한 재귀 호출로 구현된 LCS 문제의 솔루션입니다. 구현 내용은 단순히 위에서 언급했던 재귀적인 구조를 따릅니다.
 > Following is simple recursive implementation of the LCS problem. The implementation simply follows the recursive structure mentioned above.
 
 ```cpp
@@ -82,8 +84,10 @@ int main()
 }
 ```
 
+위 코드의 재귀적인 접근 방식의 worst case의 시간복잡도는 O(2^n) 이며, worst case는 X와 Y가 서로 매칭되는 문자가 하나도 없는 경우에 발생합니다.
 > Time complexity of the above naive recursive approach is O(2^n) in worst case and worst case happens when all characters of X and Y mismatch i.e., length of LCS is 0.
 
+위의 구현을 고려하여 입력 문자열이 "AXYT"와 "AYZX"라고 했을때 아래와 같은 부분 재귀 트리 형태를 생각해볼 수 있습니다.
 > Considering the above implementation, following is a partial recursion tree for input strings “AXYT” and “AYZX”
 
 ```
@@ -94,6 +98,7 @@ int main()
 lcs("AX", "AYZX") lcs("AXY", "AYZ")   lcs("AXY", "AYZ") lcs("AXYT", "AY")
 ```
 
+위의 부분 재귀 트리를 보면, 동일한 lcs("AXY", "AYZ") 연산이 2번 있습니다. 우리가 만약 완전한 형태의 재귀 트리를 그려본다고 하면, 아주 많은 서브문제들이 동일한 연산을 반복하고 있다는 것을 볼 수 있을겁니다. 그래서 이 문제는 하위구조의 중복 특성이 있으며 동일한 서브문제들의 재연산은 Memoization(top down) 또는 Tabulation(bottom up)을 사용하여 피할 수 있습니다. 아래 코드는 Tabulation 방식으로 구현된 LCS 문제입니다.
 > In the above partial recursion tree, lcs(“AXY”, “AYZ”) is being solved twice. If we draw the complete recursion tree, then we can see that there are many subproblems which are solved again and again. So this problem has Overlapping Substructure property and recomputation of same subproblems can be avoided by either using Memoization or Tabulation. Following is a tabulated implementation for the LCS problem.
 
 ```cpp
@@ -142,6 +147,7 @@ int main()
 }
 ```
 
+Tabulation 방식으로 구현된 위 코드의 시간복잡도느 O(mn)이고 이는 단순 재귀 구현의 worst case보다 훨씬 빠릅니다.
 > Time Complexity of the above implementation is O(mn) which is much better than the worst-case time complexity of Naive Recursive implementation.
 
 ---
