@@ -17,11 +17,14 @@ LCS는 주어진 두 개의 시퀀스에 모두 포함된 가장 긴 서브시�
 
 <br>
 
-무식하게 풀기 접근법의 복잡성을 알아보기 위해 먼저 길이가 n인 문자열의 서브시퀀스가 될 수 있는 경우들의 수를 알아야하고, 1부터 n-1까지의 길이 갖는 서브시퀀스의 개수를 찾아야합니다. 1개의 요소를 갖는 조합의 숫자가 <sub>n</sub>C<sub>1</sub>이라고 했던 순열과 조합 이론을 다시한번 떠올려봅시다. 2개의 요소를 갖는 조합의 개수는 <sub>n</sub>C<sub>2</sub>이며 이러한 과정을 계속 이어나가게 됩니다. 우리는 <sub>n</sub>C<sub>0</sub> + <sub>n</sub>C<sub>1</sub> + <sub>n</sub>C<sub>2</sub> + ... + <sub>n</sub>C<sub>n</sub> = 2<sup>n</sup> 이라는 것을 알고있습니다. 여기서 우리는 길이가 n인 문자열은 서로 다른 2<sup>n</sup>-1개의 서브시퀀스를 갖는다(길이가 0인 서브시퀀스는 고려하지 않기때문에)는 것을 알 수 있습니다. 이것은 무식하게 풀기 접근법의 시간복잡도는 O(n * 2<sup>n</sup>)이라는 것을 말합니다. 서브시퀀스가 양쪽의 문자열에 모두 포함되는지를 확인하는데 O(n)의 시간이 걸리다는 것을 기억합시다. 동적 프로그래밍을 사용함으로써 이 시간복잡도를 개선할 수 있습니다.
+무식하게 풀기 접근법의 복잡성을 알아보기 위해 먼저 길이가 n인 문자열의 서브시퀀스가 될 수 있는 경우들의 수를 알아야하고, 1부터 n-1까지의 길이 갖는 서브시퀀스의 개수를 찾아야합니다. 1개의 요소를 갖는 조합의 숫자가 <sub>n</sub>C<sub>1</sub>이라고 했던 순열과 조합 이론을 다시한번 떠올려봅시다. 2개의 요소를 갖는 조합의 개수는 <sub>n</sub>C<sub>2</sub>이며 이러한 과정을 계속 이어나가게 됩니다. 우리는 <sub>n</sub>C<sub>0</sub> + <sub>n</sub>C<sub>1</sub> + <sub>n</sub>C<sub>2</sub> + ... + <sub>n</sub>C<sub>n</sub> = 2<sup>n</sup> 이라는 것(이항정리)을 알고있습니다. 여기서 우리는 길이가 n인 문자열은 서로 다른 2<sup>n</sup>-1개의 서브시퀀스를 갖는다(길이가 0인 서브시퀀스는 고려하지 않기때문에)는 것을 알 수 있습니다. 이것은 무식하게 풀기 접근법의 시간복잡도는 O(n * 2<sup>n</sup>)이라는 것을 말합니다. 서브시퀀스가 양쪽의 문자열에 모두 포함되는지를 확인하는데 O(n)의 시간이 걸리다는 것을 기억합시다. 동적 프로그래밍을 사용함으로써 이 시간복잡도를 개선할 수 있습니다.
 > In order to find out the complexity of brute force approach, we need to first know the number of possible different subsequences of a string with length n, i.e., find the number of subsequences with lengths ranging from 1,2,..n-1. Recall from theory of permutation and combination that number of combinations with 1 element are <sub>n</sub>C<sub>1</sub>. Number of combinations with 2 elements are <sub>n</sub>C<sub>2</sub> and so forth and so on. We know that <sub>n</sub>C<sub>0</sub> + <sub>n</sub>C<sub>1</sub> + <sub>n</sub>C<sub>2</sub> + ... + <sub>n</sub>C<sub>n</sub> = 2<sup>n</sup>. So a string of length n has 2<sup>n</sup>-1 different possible subsequences since we do not consider the subsequence with length 0. This implies that the time complexity of the brute force approach will be O(n * 2<sup>n</sup>). Note that it takes O(n) time to check if a subsequence is common to both the strings. This time complexity can be improved using dynamic programming.
 
 💭<B>순열이 아닌 조합인 이유는?</B>  
-예를들어 시퀀스가 "ABCD"라고 가정해보자. 2개의 요소를 갖는 서브시퀀스의 경우의 수를 생각해보면 AB는 서브시퀀스가 가능하지만 BA는 서브시퀀스가 불가능(순서는 지켜야하므로)하다. 즉, AB와 BA를 서로 다른 경우로 구분하는 순열이 아닌 AB와 BA를 동일하게 처리하는 조합으로 봐야한다.
+예를들어 시퀀스가 "ABCD"라고 가정해보겠습니다. 2개의 요소를 갖는 서브시퀀스의 경우의 수를 생각해보면 AB는 서브시퀀스가 가능하지만 BA는 서브시퀀스가 불가능(순서는 지켜야하므로)합니다. 즉, AB와 BA를 서로 다른 경우로 구분하는 순열이 아닌 AB와 BA를 동일하게 처리하는 조합으로 봐야하는 것입니다.
+
+💭<B>서브시퀀스가 양쪽의 문자열에 모두 포함되는지를 확인하는데 O(n)의 시간이 걸리는 이유는?</B>  
+주어진 두 문자열 X, Y의 길이가 각각 m, n 이라고 가정해보겠습니다. 서브시퀀스의 길이를 k(m > k, n > k)라고 한다면 문자열 X에 서브시퀀스가 포함되는지를 확인하기 위해서는 X[0 .. k-1], X[1 .. k], ... X[m-k, m-1] 즉, m - k + 1 번 반복해야합니다. 마찬가지로 문자열 Y에 대해서는 n - k + 1번 반복하게 됩니다. 그러므로 서브시퀀스가 양쪽의 문자열 X, Y에 모두 포함되는지를 확인하는데 걸리는 시간은 O(m - k + 1 + n - k + 1) = O(m + n - 2k + 2) = O(n)이 되는 것입니다.
 
 <br>
 

@@ -1,7 +1,7 @@
 /*
 문제 링크: https://practice.geeksforgeeks.org/problems/longest-common-subsequence-1587115620/1
 
-Longest Common Subsequence 
+Longest Common Subsequence
 Given two sequences, find the length of longest subsequence present in both of them. Both the strings are of uppercase.
 
 Example 1:
@@ -31,13 +31,37 @@ Constraints:
 */
 
 #include <iostream>
+#include <algorithm>
 
 class Solution
 {
 public:
-    int lcs(int x, int y, std::string s1, std::string s2)
+    int lcs(int s1_len, int s2_len, const std::string& s1, const std::string& s2)
     {
-        
+        // tabulation
+        int lcs_result[s1_len + 1][s2_len + 1];
+
+        for (int i = 0; i <= s1_len; i++)
+        {
+            for(int j = 0; j <= s2_len; j++)
+            {
+                if (i == 0 || j == 0)
+                {
+                    // 인덱스는 1부터 시작이므로 인덱스가 0인 경우는 예외 처리
+                    lcs_result[i][j] = 0;
+                }
+                else if (s1[i - 1] == s2[j - 1])
+                {
+                    lcs_result[i][j] = 1 + lcs_result[i - 1][j - 1];
+                }
+                else if (s1[i - 1] != s2[j - 1])
+                {
+                    lcs_result[i][j] = std::max(lcs_result[i - 1][j], lcs_result[i][j - 1]);
+                }
+            }
+        }
+
+        return lcs_result[s1_len][s2_len];
     }
 };
 
