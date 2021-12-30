@@ -7,7 +7,7 @@
 <br>
 
 ## Longest Common Subsequence
-우리는 Set1과 Set2에서 각각 하위 문제들의 중복과 최적화된 하위 구조의 특징에 대해 논의해보았습니다. 또한 Set3에서는 한가지 예제에 대해 이야기를 나누었습니다. 동적 프로그래밍을 사용하여 풀 수 있는 또 하나의 예제로서 Longest Common Subsequence(LCS)에 대해 알아보도록 하겠습니다.
+우리는 [Set1](https://www.geeksforgeeks.org/overlapping-subproblems-property-in-dynamic-programming-dp-1/)과 [Set2](https://www.geeksforgeeks.org/optimal-substructure-property-in-dynamic-programming-dp-2/)에서 각각 하위 문제들의 중복과 최적화된 하위 구조의 특징에 대해 논의해보았습니다. 또한 Set3에서는 한가지 예제에 대해 이야기를 나누었습니다. 동적 프로그래밍을 사용하여 풀 수 있는 또 하나의 예제로서 Longest Common Subsequence(LCS)에 대해 알아보도록 하겠습니다.
 > We have discussed Overlapping Subproblems and Optimal Substructure properties in Set 1 and Set 2 respectively. We also discussed one example problem in Set 3. Let us discuss Longest Common Subsequence (LCS) problem as one more example problem that can be solved using Dynamic Programming.
 
 <br>
@@ -19,6 +19,9 @@ LCS는 주어진 두 개의 시퀀스에 모두 포함된 가장 긴 서브시�
 
 무식하게 풀기 접근법의 복잡성을 알아보기 위해 먼저 길이가 n인 문자열의 서브시퀀스가 될 수 있는 경우들의 수를 알아야하고, 1부터 n-1까지의 길이 갖는 서브시퀀스의 개수를 찾아야합니다. 1개의 요소를 갖는 조합의 숫자가 nC1이라고 했던 순열과 조합 이론을 다시한번 떠올려봅시다. 2개의 요소를 갖는 조합의 개수는 nC2이며 이러한 과정을 계속 이어나가게 됩니다. 우리는 nC0 + nC1 + nC2 + ... + nCn = 2n 이라는 것을 알고있습니다. 여기서 우리는 길이가 n인 문자열은 서로 다른 2n-1개의 서브시퀀스를 갖는다(길이가 0인 서브시퀀스는 고려하지 않기때문에)는 것을 알 수 있습니다. 이것은 무식하게 풀기 접근법의 시간복잡도는 O(n * 2^n)이라는 것을 말합니다. 서브시퀀스가 양쪽의 문자열에 모두 포함되는지를 확인하는데 O(n)의 시간이 걸리다는 것을 기억합시다. 동적 프로그래밍을 사용함으로써 이 시간복잡도를 개선할 수 있습니다.
 > In order to find out the complexity of brute force approach, we need to first know the number of possible different subsequences of a string with length n, i.e., find the number of subsequences with lengths ranging from 1,2,..n-1. Recall from theory of permutation and combination that number of combinations with 1 element are nC1. Number of combinations with 2 elements are nC2 and so forth and so on. We know that nC0 + nC1 + nC2 + … nCn = 2^n. So a string of length n has 2^n-1 different possible subsequences since we do not consider the subsequence with length 0. This implies that the time complexity of the brute force approach will be O(n * 2^n). Note that it takes O(n) time to check if a subsequence is common to both the strings. This time complexity can be improved using dynamic programming.
+
+💭<B>순열이 아닌 조합인 이유는?</B>  
+예를들어 시퀀스가 "ABCD"라고 가정해보자. 2개의 요소를 갖는 서브시퀀스의 경우의 수를 생각해보면 AB는 서브시퀀스가 가능하지만 BA는 서브시퀀스가 불가능(순서는 지켜야하므로)하다. 즉, AB와 BA를 서로 다른 경우로 구분하는 순열이 아닌 AB와 BA를 동일하게 처리하는 조합으로 봐야한다.
 
 <br>
 
