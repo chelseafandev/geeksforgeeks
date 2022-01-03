@@ -10,7 +10,7 @@
 
 ## Longest Common Subsequence
 우리는 [Set1](https://www.geeksforgeeks.org/overlapping-subproblems-property-in-dynamic-programming-dp-1/)과 [Set2](https://www.geeksforgeeks.org/optimal-substructure-property-in-dynamic-programming-dp-2/)에서 각각 하위 문제들의 중복과 최적화된 하위 구조의 특징에 대해 논의해보았습니다. 또한 Set3에서는 한가지 예제에 대해 이야기를 나누었습니다. 동적 프로그래밍을 사용하여 풀 수 있는 또 하나의 예제로서 Longest Common Subsequence(LCS)에 대해 알아보도록 하겠습니다.
-> We have discussed Overlapping Subproblems and Optimal Substructure properties in Set 1 and Set 2 respectively. We also discussed one example problem in Set 3. Let us discuss Longest Common Subsequence (LCS) problem as one more example problem that can be solved using Dynamic Programming.
+> We have discussed `Overlapping Subproblems` and `Optimal Substructure` properties in Set 1 and Set 2 respectively. We also discussed one example problem in Set 3. Let us discuss Longest Common Subsequence (LCS) problem as one more example problem that can be solved using Dynamic Programming.
 
 <br>
 
@@ -208,7 +208,7 @@ Tabulation 방식으로 구현된 위 코드의 시간복잡도느 O(mn)이고 �
 
 ## Longest Increasing Subsequence
 우리는 앞서 하위 문제들의 중복과 최적화된 하위 구조의 특징에대해 논의해보았습니다. 이제 동적 프로그래밍을 사용하여 풀 수 있는 또 하나의 예제로서 Longest Increasing Subsequence (LIS)에 대해 알아보도록 하겠습니다.
-> We have already discussed Overlapping Subproblems and Optimal Substructure properties. Now, let us discuss the Longest Increasing Subsequence (LIS) problem as an example problem that can be solved using Dynamic Programming.
+> We have already discussed `Overlapping Subproblems` and `Optimal Substructure` properties. Now, let us discuss the Longest Increasing Subsequence (LIS) problem as an example problem that can be solved using Dynamic Programming.
 
 <br>
 
