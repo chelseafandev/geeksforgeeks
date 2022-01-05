@@ -460,7 +460,6 @@ Length of lis is 5
 
 </div>
 </details>
-<<<<<<< HEAD
 
 ---
 
@@ -519,5 +518,3 @@ Replace 'n' with 'r', insert t, insert a
 </details>
 
 ---
-=======
->>>>>>> a9056a1e284362221313c56aaf17837098ce8b56
