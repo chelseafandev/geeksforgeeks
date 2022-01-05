@@ -4,6 +4,7 @@
   - [Breadth First Search or BFS for a Graph](#breadth-first-search-or-bfs-for-a-graph)
     - [Solution](#solution)
   - [Depth First Search or DFS for a Graph](#depth-first-search-or-dfs-for-a-graph)
+    - [Solution](#solution-1)
 
 <br>
 
@@ -196,3 +197,214 @@ Following is Breadth First Traversal (starting from vertex 2)
 <br>
 
 ## Depth First Search or DFS for a Graph
+원문링크: https://www.geeksforgeeks.org/depth-first-search-or-dfs-for-a-graph/
+
+<br>
+
+> Depth First Traversal (or Search) for a graph is similar to Depth First Traversal of a tree. The only catch here is, unlike trees, graphs may contain cycles (a node may be visited twice). To avoid processing a node more than once, use a boolean visited array.
+
+Example:
+```diff
+Input: n = 4, e = 6
+0 -> 1, 0 -> 2, 1 -> 2, 2 -> 0, 2 -> 3, 3 -> 3
+Output: DFS from vertex 1 : 1 2 0 3
+Explanation:
+DFS Diagram: 
+```
+![](../resources/images/dfs-figure-1.jpg)
+
+```diff
+Input: n = 4, e = 6
+2 -> 0, 0 -> 2, 1 -> 2, 0 -> 1, 3 -> 3, 1 -> 3
+Output: DFS from vertex 2 : 2 0 1 3
+Explanation:
+DFS Diagram: 
+```
+![](../resources/images/dfs-figure-2.png)
+
+<br>
+
+[소스로 이동](https://github.com/chelseafandev/geeksforgeeks/blob/main/Graph/BreadthFirstSearch.cpp)
+
+<br>
+
+### Solution
+
+<br>
+
+<details>
+<summary>솔루션 보기</summary>
+<div markdown="1">
+
+<br>
+
+```cpp
+#include <iostream>
+#include <vector>
+#include <set>
+
+#include <stack>
+
+class graph
+{
+public:
+    static const int CAPACITY = 100;
+    
+    graph()
+    {
+        // init
+        for (int i = 0; i < CAPACITY; i++)
+        {
+            labels_[i] = -1;
+        }
+
+        for (int i = 0; i < CAPACITY; i++)
+        {
+            for (int j = 0; j < CAPACITY; j++)
+            {
+                edges_[i][j] = false;
+            }
+        }
+
+        size_ = 0;
+    }
+
+    int size() const
+    {
+        return size_;
+    }
+
+    void add_vertex(int val)
+    {
+        if (size_ < CAPACITY)
+        {
+            int new_vertex_index = size_;
+            size_++;
+            
+            // set new edge
+            for(int i = 0; i < size_; i++)
+            {
+                edges_[new_vertex_index][i] = false;
+                edges_[i][new_vertex_index] = false;
+            }
+
+            // set new vertex label
+            labels_[new_vertex_index] = val;
+        }
+    }
+
+    void add_edge(int src, int dst)
+    {
+        if(src < 0 || src >= size_)
+        {
+            return;
+        }
+
+        if(dst < 0 || dst >= size_)
+        {
+            return;
+        }
+
+        edges_[src][dst] = true;
+    }
+
+    std::set<int> neighbors(int vertex)
+    {
+        std::set<int> result;
+
+        for(int i = 0; i < size_; i++)
+        {
+            if (edges_[vertex][i])
+            {
+                result.insert(i);
+            }
+        }
+
+        return result;
+    }
+
+private:
+    bool edges_[CAPACITY][CAPACITY];
+    int labels_[CAPACITY];
+    int size_;
+};
+
+void dfs(graph& g, int start)
+{
+    bool visited[g.size()];
+    for(int i = 0; i < g.size(); i++)
+    {
+        visited[i] = false;
+    }
+
+    std::stack<int> s;
+    s.push(start);
+    while(!s.empty())
+    {
+        int popped = s.top();
+        visited[popped] = true;
+        std::cout << popped << " ";
+        s.pop();
+
+        for (auto neighbor : g.neighbors(popped))
+        {
+            if (!visited[neighbor])
+            {
+                s.push(neighbor);
+            }
+        }
+    }
+}
+
+int main()
+{
+    graph g;
+    
+    g.add_vertex(0);
+    g.add_vertex(1);
+    g.add_vertex(2);
+    g.add_vertex(3);
+
+    // ex1
+    // g.add_edge(0, 1);
+    // g.add_edge(0, 2);
+    // g.add_edge(1, 2);
+    // g.add_edge(2, 0);
+    // g.add_edge(2, 3);
+    // g.add_edge(3, 3);
+
+    // std::cout << "Following is Depth First Traversal " << "(starting from vertex 1) \n";
+    // dfs(g, 1);
+
+    // ex2
+    g.add_edge(0, 1);
+    g.add_edge(0, 2);
+    g.add_edge(1, 2);
+    g.add_edge(1, 3);
+    g.add_edge(2, 0);
+    g.add_edge(3, 3);
+
+    std::cout << "Following is Depth First Traversal " << "(starting from vertex 2) \n";
+    dfs(g, 2);
+
+    return 0;
+}
+```
+
+<br>
+
+Ouput:
+```diff
+Following is Depth First Traversal (starting from vertex 2)
+2 0 1 3
+```
+
+<br>
+
+시간복잡도: O(V+E) (V: vertex의 개수, E: edge의 개수)
+> Time Complexity: O(V+E) where V is a number of vertices in the graph and E is a number of edges in the graph.
+
+</div>
+</details>
+
+---

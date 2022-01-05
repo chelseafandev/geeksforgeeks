@@ -2,7 +2,7 @@
 #include <vector>
 #include <set>
 
-#include <queue>
+#include <stack>
 
 class graph
 {
@@ -88,7 +88,7 @@ private:
     int size_;
 };
 
-void bfs(graph& g, int start)
+void dfs(graph& g, int start)
 {
     bool visited[g.size()];
     for(int i = 0; i < g.size(); i++)
@@ -96,21 +96,20 @@ void bfs(graph& g, int start)
         visited[i] = false;
     }
 
-    std::queue<int> q;
-
-    q.push(start);
-    while(!q.empty())
+    std::stack<int> s;
+    s.push(start);
+    while(!s.empty())
     {
-        int popped = q.front();
+        int popped = s.top();
         visited[popped] = true;
         std::cout << popped << " ";
-        q.pop();
+        s.pop();
 
         for (auto neighbor : g.neighbors(popped))
         {
-            if(!visited[neighbor])
+            if (!visited[neighbor])
             {
-                q.push(neighbor);
+                s.push(neighbor);
             }
         }
     }
@@ -125,15 +124,27 @@ int main()
     g.add_vertex(2);
     g.add_vertex(3);
 
+    // ex1
+    // g.add_edge(0, 1);
+    // g.add_edge(0, 2);
+    // g.add_edge(1, 2);
+    // g.add_edge(2, 0);
+    // g.add_edge(2, 3);
+    // g.add_edge(3, 3);
+
+    // std::cout << "Following is Depth First Traversal " << "(starting from vertex 1) \n";
+    // dfs(g, 1);
+
+    // ex2
     g.add_edge(0, 1);
     g.add_edge(0, 2);
     g.add_edge(1, 2);
+    g.add_edge(1, 3);
     g.add_edge(2, 0);
-    g.add_edge(2, 3);
     g.add_edge(3, 3);
 
-    std::cout << "Following is Breadth First Traversal " << "(starting from vertex 2) \n";
-    bfs(g, 2);
+    std::cout << "Following is Depth First Traversal " << "(starting from vertex 2) \n";
+    dfs(g, 2);
 
     return 0;
 }
