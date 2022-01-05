@@ -5,10 +5,16 @@
     - [Solution](#solution)
   - [Longest Increasing Subsequence](#longest-increasing-subsequence)
     - [Solution](#solution-1)
+  - [Edit Distance](#edit-distance)
+    - [Solution](#solution-2)
 
 <br>
 
 ## Longest Common Subsequence
+원문링크: https://www.geeksforgeeks.org/longest-common-subsequence-dp-4/
+
+<br>
+
 우리는 [Set1](https://www.geeksforgeeks.org/overlapping-subproblems-property-in-dynamic-programming-dp-1/)과 [Set2](https://www.geeksforgeeks.org/optimal-substructure-property-in-dynamic-programming-dp-2/)에서 각각 하위 문제들의 중복과 최적화된 하위 구조의 특징에 대해 논의해보았습니다. 또한 Set3에서는 한가지 예제에 대해 이야기를 나누었습니다. 동적 프로그래밍을 사용하여 풀 수 있는 또 하나의 예제로서 Longest Common Subsequence(LCS)에 대해 알아보도록 하겠습니다.
 > We have discussed Overlapping Subproblems and Optimal Substructure properties in Set 1 and Set 2 respectively. We also discussed one example problem in Set 3. Let us discuss Longest Common Subsequence (LCS) problem as one more example problem that can be solved using Dynamic Programming.
 
@@ -120,6 +126,11 @@ int main()
 }
 ```
 
+Output:
+```diff
+Length of LCS is 4
+```
+
 <br>
 
 위 코드의 재귀적인 접근 방식의 worst case의 시간복잡도는 O(2<sup>n</sup>) 이며, worst case는 X와 Y가 서로 매칭되는 문자가 하나도 없는 경우에 발생합니다.
@@ -193,6 +204,11 @@ int main()
 }
 ```
 
+Output:
+```diff
+Length of LCS is 4
+```
+
 <br>
 
 Tabulation 방식으로 구현된 위 코드의 시간복잡도느 O(mn)이고 이는 단순 재귀 구현의 worst case보다 훨씬 빠릅니다.
@@ -207,6 +223,10 @@ Tabulation 방식으로 구현된 위 코드의 시간복잡도느 O(mn)이고 �
 <br>
 
 ## Longest Increasing Subsequence
+원문링크: https://www.geeksforgeeks.org/longest-increasing-subsequence-dp-3/
+
+<br>
+
 우리는 앞서 하위 문제들의 중복과 최적화된 하위 구조의 특징에대해 논의해보았습니다. 이제 동적 프로그래밍을 사용하여 풀 수 있는 또 하나의 예제로서 Longest Increasing Subsequence (LIS)에 대해 알아보도록 하겠습니다.
 > We have already discussed Overlapping Subproblems and Optimal Substructure properties. Now, let us discuss the Longest Increasing Subsequence (LIS) problem as an example problem that can be solved using Dynamic Programming.
 
@@ -348,6 +368,11 @@ int main()
 }
 ```
 
+Output:
+```diff
+Length of lis is 5
+```
+
 <br>
 
 Method2: Dynamic Programming  
@@ -378,34 +403,118 @@ Iteration-wise simulation :
 ```cpp
 #include <iostream>
 #include <vector>
-#include <algorithm>
 
-// lis() returns the length of the longest increasing subsequence in arr[] of size n
-int lis(const std::vector<int> &v, int n)
+class Solution
 {
-    int lis[n];
-
-    lis[0] = 1;
-
-    // Compute optimized LIS values in bottom up manner
-    for (int i = 1; i < n; i++)
+public:
+    int lis(int n, const std::vector<int> &v)
     {
-        lis[i] = 1;
-        for (int j = 0; j < i; j++)
-            if (v[i] > v[j] && lis[i] < lis[j] + 1)
-                lis[i] = lis[j] + 1;
-    }
+        // lis값을 tabulation(bottom-up)하기위해 사용하는 변수
+        int l[n];
+        for (int i = 0; i < n; i++)
+        {
+            l[i] = 1; // 최소 본인의 길이는 lis값이 될 수 있으므로 1로 초기화함
+        }
 
-    return *std::max_element(lis, lis + n);
-}
+        // tabulation!
+        for (int i = 1; i < n; i++)
+        {
+            for (int j = 0; j < i; j++)
+            {
+                if (v[i] > v[j] && l[i] < l[j] + 1)
+                {
+                    l[i] = l[j] + 1;
+                }
+            }
+        }
+
+        // lis의 max값을 반환
+        int result = 0;
+        for (int i = 0; i < n; i++)
+        {
+            std::cout << "l[" << i << "] = " << l[i] << std::endl;
+            if (l[i] > result)
+            {
+                result = l[i];
+            }
+        }
+
+        return result;
+    }
+};
 
 int main()
 {
     std::vector<int> input = {10, 22, 9, 33, 21, 50, 41, 60};
-    std::cout << "Length of lis is " << lis(input, input.size()) << std::endl;
+    Solution s;
+    int result = s.lis(input.size(), input);
+    std::cout << "Length of lis is " << result << std::endl;
     return 0;
 }
 ```
 
+Output:
+```diff
+Length of lis is 5
+```
+
 </div>
 </details>
+
+---
+
+<br>
+<br>
+
+## Edit Distance
+원문링크: https://www.geeksforgeeks.org/edit-distance-dp-5/
+
+<br>
+
+> Given two strings str1 and str2 and below operations that can performed on str1. Find minimum number of edits (operations) required to convert ‘str1’ into ‘str2’.  
+
+> 1. Insert
+> 2. Remove
+> 3. Replace
+
+>All of the above operations are of equal cost. 
+
+Examples:
+```diff
+Input:   str1 = "geek", str2 = "gesek"
+Output:  1
+We can convert str1 into str2 by inserting a 's'.
+
+Input:   str1 = "cat", str2 = "cut"
+Output:  1
+We can convert str1 into str2 by replacing 'a' with 'u'.
+
+Input:   str1 = "sunday", str2 = "saturday"
+Output:  3
+Last three and first characters are same.  We basically
+need to convert "un" to "atur".  This can be done using
+below three operations. 
+Replace 'n' with 'r', insert t, insert a
+```
+
+[소스로 이동](https://github.com/chelseafandev/geeksforgeeks/blob/main/DynamicProgramming/EditDistance.cpp)
+
+<br>
+
+### Solution
+
+<br>
+
+<details>
+<summary>솔루션 보기</summary>
+<div markdown="1">
+
+<br>
+
+<!-- contents -->
+
+
+</div>
+</details>
+
+---
