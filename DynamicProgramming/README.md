@@ -471,12 +471,14 @@ Length of lis is 5
 
 <br>
 
+2개의 문자열 str1과 str2가 주어지고, 문자열 str1에 대해 아래 연산이 수행될 수 있다고 해봅시다. 이때 문자열 str1을 str2로 변환하는데 요구되는 최소한의 수정 횟수를 구하라.
 > Given two strings str1 and str2 and below operations that can performed on str1. Find minimum number of edits (operations) required to convert ‘str1’ into ‘str2’.  
 
 > 1. Insert
 > 2. Remove
 > 3. Replace
 
+위 연산을 수행하는 비용은 모두 동일합니다.
 >All of the above operations are of equal cost. 
 
 Examples:
@@ -491,10 +493,7 @@ We can convert str1 into str2 by replacing 'a' with 'u'.
 
 Input:   str1 = "sunday", str2 = "saturday"
 Output:  3
-Last three and first characters are same.  We basically
-need to convert "un" to "atur".  This can be done using
-below three operations. 
-Replace 'n' with 'r', insert t, insert a
+Last three and first characters are same.  We basically need to convert "un" to "atur".  This can be done using below three operations.  Replace 'n' with 'r', insert t, insert a
 ```
 
 [소스로 이동](https://github.com/chelseafandev/geeksforgeeks/blob/main/DynamicProgramming/EditDistance.cpp)
@@ -511,7 +510,33 @@ Replace 'n' with 'r', insert t, insert a
 
 <br>
 
-<!-- contents -->
+한가지 방법은 두 문자열의 모든 문자들을 왼쪽 또는 오른쪽부터 하나씩 처리해나가는 것입니다. 문자열의 오른쪽 끝에서부터 시작한다고 하면 순회하는 모든 문자들에 대해 아래 2가지의 케이스가 존재할 수 있습니다.
+> The idea is to process all characters one by one starting from either from left or right sides of both strings. Let us traverse from right corner, there are two possibilities for every pair of character being traversed.
+```diff
+m: Length of str1 (first string)
+n: Length of str2 (second string)
+```
+
+1. 두 문자열의 마지막 문자가 동일하다면 더 해야할 일은 없습니다. 마지막 문자를 무시하고 남아있는 문자열의 숫자를 세면됩니다. 그러므로 우리는 m-1 그리고 n-1 만큼 반복하면됩니다.
+2. 만약 두 문자열의 마지막 문자가 다르다면, 우리는 문자열 str1의 마지막 문자에 앞서 언급했던 3가지 연산을 모두 고려해봐야합니다. 3가지 연산에 대한 최소 비용을 반복해서 계산하고 그 중 가장 작은 연산을 선택합니다.
+  - 삽입: 길이가 m인 str1에 추가를 하기 때문에 확인해야할 남은 문자열의 길이는 m입니다. str2의 맨 마지막 문자를 str1에 추가했기때문에 str2의 경우 확인해야할 남은 문자열의 길이는 n- 1입니다.
+  - 삭제: 길이가 m인 str1의 가장 마지막 문자를 삭제하기때문에 확인해야할 남은 문자열의 길이는 m-1입니다. str2의 경우에는 확인해야할 길이가 그대로 n입니다.
+  - 교체: str1의 마지막 문자를 str2의 마지막 문자로 교체하는 경우에는 str1과 str2 둘 다 확인해야할 남은 문자열의 길이는 1씩 줄어든 m-1, n-1입니다.
+> 1. If last characters of two strings are same, nothing much to do. Ignore last characters and get count for remaining strings. So we recur for lengths m-1 and n-1.
+> 2. Else (If last characters are not same), we consider all operations on ‘str1’, consider all three operations on last character of first string, recursively compute minimum cost for all three operations and take minimum of three values. 
+>   - Insert: Recur for m and n-1
+>   - Remove: Recur for m-1 and n
+>   - Replace: Recur for m-1 and n-1
+
+
+> Below is implementation of above Naive recursive solution.
+
+
+> The time complexity of above solution is exponential. In worst case, we may end up doing O(3m) operations. The worst case happens when none of characters of two strings match. Below is a recursive call diagram for worst case. 
+
+> We can see that many subproblems are solved, again and again, for example, eD(2, 2) is called three times. Since same subproblems are called again, this problem has Overlapping Subproblems property. So Edit Distance problem has both properties (see this and this) of a dynamic programming problem. Like other typical Dynamic Programming(DP) problems, recomputations of same subproblems can be avoided by constructing a temporary array that stores results of subproblems.
+
+> Space Complex Solution: In the above-given method we require O(m x n) space. This will not be suitable if the length of strings is greater than 2000 as it can only create 2D array of 2000 x 2000. To fill a row in DP array we require only one row the upper row. For example, if we are filling the i = 10 rows in DP array we require only values of 9th row. So we simply create a DP array of 2 x str1 length. This approach reduces the space complexity. Here is the C++ implementation of the above-mentioned problem
 
 
 </div>
