@@ -5,6 +5,7 @@
     - [Solution](#solution)
   - [Depth First Search or DFS for a Graph](#depth-first-search-or-dfs-for-a-graph)
     - [Solution](#solution-1)
+  - [Dijkstra's shortest path](#dijkstras-shortest-path)
 
 <br>
 
@@ -411,3 +412,44 @@ Following is Depth First Traversal (starting from vertex 2)
 </details>
 
 ---
+
+## Dijkstra's shortest path
+원문링크: https://www.geeksforgeeks.org/dijkstras-shortest-path-algorithm-greedy-algo-7/
+
+<br>
+
+2가지 set을 유지하게 되는데 하나는 최소 신장 트리에 포함된 버텍스들을 저장하는 set이고 다른 하나는 아직 최소 신장 트리에 포함되지 않은 버텍스들을 저장하는 set입니다. 알고리즘의 매 스텝마다 최소 신장 트리에 아직 포함되지 않았으며 출발지로부터 거리가 최소인 버텍스를 찾게 됩니다.
+> Given a graph and a source vertex in the graph, find the shortest paths from the source to all vertices in the given graph. Dijkstra’s algorithm is very similar to Prim’s algorithm for minimum spanning tree. Like Prim’s MST, we generate a SPT (shortest path tree) with a given source as a root. We maintain two sets, one set contains vertices included in the shortest-path tree, other set includes vertices not yet included in the shortest-path tree. At every step of the algorithm, we find a vertex that is in the other set (set of not yet included) and has a minimum distance from the source.
+
+> Below are the detailed steps used in Dijkstra’s algorithm to find the shortest path from a single source vertex to all other vertices in the given graph.
+
+1) 최소 신장 트리안에 포함된 버텍스들을 트랙킹하는 set(sptSet)을 생성합니다. 최초 이 set은 비어있습니다.
+2) 주어진 그래프의 모든 버텍스들에 거리 값을 할당해줍니다. 모든 거리 값을 INFINITE로 초기화합니다. 가장 먼저 선택되는 출발지 버텍스의 거리 값은 0으로 할당합니다.
+3) sptSet이 모든 버텍스들을 포함하지 않는 동안
+   - 최소 거리 값을 가지며 sptSet에 포함되어있지 않은 버텍스 u를 선택합니다.
+   - 버텍스 u를 sptSet에 포함시킵니다.
+   - 버텍스 u에 인접해있는 모든 버텍스들의 거리 값을 업데이트 합니다. 거리 값을 업데이트하기 위해 인접한 모든 버텍스들을 순회합니다. 모든 인접한 버텍스 v에 대해서 
+> 1) Create a set sptSet (shortest path tree set) that keeps track of vertices included in the shortest-path tree, i.e., whose minimum distance from the source is calculated and finalized. Initially, this set is empty.
+> 2) Assign a distance value to all vertices in the input graph. Initialize all distance values as INFINITE. Assign distance value as 0 for the source vertex so that it is picked first.
+> 3) While sptSet doesn’t include all vertices
+> …a) Pick a vertex u which is not there in sptSet and has a minimum distance value.
+> …b) Include u to sptSet.
+> …c) Update distance value of all adjacent vertices of u. To update the distance values, iterate through all adjacent vertices. For every adjacent vertex v, if the sum of distance value of u (from source) and weight of edge u-v, is less than the distance value of v, then update the distance value of v.
+
+> Let us understand with the following example:
+![](../resources/images/dijkstra-figure1.jpg)
+
+> The set sptSet is initially empty and distances assigned to vertices are {0, INF, INF, INF, INF, INF, INF, INF} where INF indicates infinite. Now pick the vertex with a minimum distance value. The vertex 0 is picked, include it in sptSet. So sptSet becomes {0}. After including 0 to sptSet, update distance values of its adjacent vertices. Adjacent vertices of 0 are 1 and 7. The distance values of 1 and 7 are updated as 4 and 8. The following subgraph shows vertices and their distance values, only the vertices with finite distance values are shown. The vertices included in SPT are shown in green colour.
+![](../resources/images/dijkstra-figure2.jpg)
+
+> Pick the vertex with minimum distance value and not already included in SPT (not in sptSET). The vertex 1 is picked and added to sptSet. So sptSet now becomes {0, 1}. Update the distance values of adjacent vertices of 1. The distance value of vertex 2 becomes 12.
+![](../resources/images/dijkstra-figure3.jpg)
+
+> Pick the vertex with minimum distance value and not already included in SPT (not in sptSET). Vertex 7 is picked. So sptSet now becomes {0, 1, 7}. Update the distance values of adjacent vertices of 7. The distance value of vertex 6 and 8 becomes finite (15 and 9 respectively). 
+![](../resources/images/dijkstra-figure4.jpg)
+
+> Pick the vertex with minimum distance value and not already included in SPT (not in sptSET). Vertex 6 is picked. So sptSet now becomes {0, 1, 7, 6}. Update the distance values of adjacent vertices of 6. The distance value of vertex 5 and 8 are updated.
+![](../resources/images/dijkstra-figure5.jpg)
+
+> We repeat the above steps until sptSet includes all vertices of the given graph. Finally, we get the following Shortest Path Tree (SPT).
+![](../resources/images/dijkstra-figure6.jpg)
