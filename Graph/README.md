@@ -413,6 +413,9 @@ Following is Depth First Traversal (starting from vertex 2)
 
 ---
 
+<br>
+<br>
+
 ## Dijkstra's shortest path
 원문링크: https://www.geeksforgeeks.org/dijkstras-shortest-path-algorithm-greedy-algo-7/
 
@@ -436,24 +439,38 @@ Following is Depth First Traversal (starting from vertex 2)
 > …b) Include u to sptSet.
 > …c) Update distance value of all adjacent vertices of u. To update the distance values, iterate through all adjacent vertices. For every adjacent vertex v, if the sum of distance value of u (from source) and weight of edge u-v, is less than the distance value of v, then update the distance value of v.
 
+아래 예제를 통해 이해해보도록 하겠습니다.
 > Let us understand with the following example:
 ![](../resources/images/dijkstra-figure1.jpg)
 
+sptSet은 최초 비어있는 상태이며 버텍스들에 할당된 거리 값은 {0, INF, INF, INF, INF, INF, INF, INF} 입니다. 이제 가장 작은 거리 값을 갖는 버텍스를 선택합니다. 버텍스 0이 선택되며 버텍스 0을 sptSet 안에 포함시킵니다. 그렇게되면 sptSet은 {0}이 될 것입니다. sptSet에 버텍스 0를 포함시킨 후에 버텍스 0에 인접한 버텍스들의 거리 값을 업데이트합니다. 버텍스 0에 인접한 버텍스들은 버텍스 1과 7입니다. 버텍스 1과 7의 거리 값은 4와 8로 각각 업데이트 됩니다. 아래 서브그래프에서 버텍스들과 그것들의 거리 값을 보여주고 있으며 오직 유한한 거리를 갖는 버텍스들만 보여집니다. 최소 신장 트리(SPT)에 포함된 버텍스들은 초록색으로 표시됩니다.
 > The set sptSet is initially empty and distances assigned to vertices are {0, INF, INF, INF, INF, INF, INF, INF} where INF indicates infinite. Now pick the vertex with a minimum distance value. The vertex 0 is picked, include it in sptSet. So sptSet becomes {0}. After including 0 to sptSet, update distance values of its adjacent vertices. Adjacent vertices of 0 are 1 and 7. The distance values of 1 and 7 are updated as 4 and 8. The following subgraph shows vertices and their distance values, only the vertices with finite distance values are shown. The vertices included in SPT are shown in green colour.
 
 ![](../resources/images/dijkstra-figure2.jpg)
 
+아직 최소 신장 트리에 포함되지 않았으며(sptSet에 포함되지 않은) 최소 거리 값을 갖는 버텍스를 선택합니다. 버텍스 1이 선택되고 sptSet에 추가됩니다. sptSet은 이제 {0, 1}이 됩니다. 버텍스 1에 인접한 버텍스들의 거리 값을 업데이트 해줍니다. 버텍스 2의 거리 값은 12가 됩니다. (버텍스 7도 인접해있지만 거리 값이 8로 설정되어있으며 이는 출발지인 버텍스 0에서 버텍스 1까지의 거리인 4와 버텍스 4에서 버텍스 8까지의 거리 값인 11의 합인 15보다 작기때문에 갱신하지 않음)
 > Pick the vertex with minimum distance value and not already included in SPT (not in sptSET). The vertex 1 is picked and added to sptSet. So sptSet now becomes {0, 1}. Update the distance values of adjacent vertices of 1. The distance value of vertex 2 becomes 12.
 
 ![](../resources/images/dijkstra-figure3.jpg)
 
+아직 최소 신장 트리에 포함되지 않았으며(sptSet에 포함되지 않은) 최소 거리 값을 갖는 버텍스를 선택합니다. 버텍스 7이 선택됩니다. sptSet은 {0, 1, 7}이 됩니다. 버텍스 7에 인접한 버텍스들의 거리 값을 업데이트 해줍니다. 버텍스 6과 8의 거리 값은 각각 15와 9가 됩니다.
 > Pick the vertex with minimum distance value and not already included in SPT (not in sptSET). Vertex 7 is picked. So sptSet now becomes {0, 1, 7}. Update the distance values of adjacent vertices of 7. The distance value of vertex 6 and 8 becomes finite (15 and 9 respectively). 
 
 ![](../resources/images/dijkstra-figure4.jpg)
 
+아직 최소 신장 트리에 포함되지 않았으며(sptSet에 포함되지 않은) 최소 거리 값을 갖는 버텍스를 선택합니다. 버텍스 6이 선택됩니다. sptSet은 {0, 1, 7, 6}이 됩니다. 버텍스 6에 인접한 버텍스들의 거리 값을 업데이트 해줍니다. 버텍스 5와 8의 거리 값을 업데이트 해줍니다. (여기서 버텍스 8의 경우에는 해당 버텍스의 거리 값이 15이고 출발지인 버텍스 0에서 버텍스 6까지의 거리인 9와 버텍스 6에서 버텍스 8까지의 거리 깂인 6의 합인 15와 같기때문에 굳이 갱신할 필요는 없음)
 > Pick the vertex with minimum distance value and not already included in SPT (not in sptSET). Vertex 6 is picked. So sptSet now becomes {0, 1, 7, 6}. Update the distance values of adjacent vertices of 6. The distance value of vertex 5 and 8 are updated.
 
 ![](../resources/images/dijkstra-figure5.jpg)
 
+위 과정들을 sptSet에 주어진 그래프의 모든 노드가 포함될때까지 반복합니다. 최종적으로 아래와 같은 최소 신장 트리를 얻어내게 됩니다.
 > We repeat the above steps until sptSet includes all vertices of the given graph. Finally, we get the following Shortest Path Tree (SPT).
 ![](../resources/images/dijkstra-figure6.jpg)
+
+<br>
+
+[소스로 이동](https://github.com/chelseafandev/geeksforgeeks/blob/main/Graph/BreadthFirstSearch.cpp)
+
+<br>
+
+---
