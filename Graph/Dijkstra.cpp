@@ -56,6 +56,12 @@ void dijkstra(int graph[NUMBER_OF_VERTICES][NUMBER_OF_VERTICES], int src)
     }
 }
 
+// using priority queue
+void dijkstra_ver2(int graph[NUMBER_OF_VERTICES][NUMBER_OF_VERTICES], int src)
+{
+    
+}
+
 int main()
 {
     // 인접행렬로 그래프를 표현(행:출발지 열:도착지)
